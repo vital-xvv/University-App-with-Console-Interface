@@ -4,10 +4,12 @@ import com.botscrew.vital.consoleapp.model.DepartmentStatistics;
 import com.botscrew.vital.consoleapp.model.Lector;
 import com.botscrew.vital.consoleapp.repository.DepartmentRepository;
 import com.botscrew.vital.consoleapp.rowmapper.LectorRowMapper;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.Map;
+import java.util.Optional;
 
 import static com.botscrew.vital.consoleapp.query.DepartmentQueries.*;
 
@@ -20,10 +22,14 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
     }
 
     @Override
-    public Lector getHeadOfDepartmentByName(String depName) {
-        return jdbc.queryForObject(FIND_HEAD_OF_DEPARTMENT_BY_NAME_QUERY,
-                Map.of("depName", depName),
-                new LectorRowMapper());
+    public Optional<Lector> getHeadOfDepartmentByName(String depName) {
+        try {
+            return Optional.ofNullable(jdbc.queryForObject(FIND_HEAD_OF_DEPARTMENT_BY_NAME_QUERY,
+                    Map.of("depName", depName),
+                    new LectorRowMapper()));
+        }catch(EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     @Override

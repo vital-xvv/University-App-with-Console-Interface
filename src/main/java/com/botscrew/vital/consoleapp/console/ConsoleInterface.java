@@ -10,6 +10,7 @@ import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @ShellComponent
@@ -21,15 +22,20 @@ public class ConsoleInterface {
 
     @ShellMethod(key = "Who is head of department", value = "Get a full name of a head of the department.")
     public String headOfDepartment(String depName) {
-        Lector lector = departmentRepository.getHeadOfDepartmentByName(depName);
-        return String.format("Head of %s department is %s %s", depName, lector.getFirstName(), lector.getLastName());
+        Optional<Lector> lector = departmentRepository.getHeadOfDepartmentByName(depName);
+        return lector.isEmpty() ?
+                String.format("Department with name %s was not found", depName)
+                : String.format("Head of %s department is %s %s", depName,
+                    lector.get().getFirstName(), lector.get().getLastName());
     }
 
     @ShellMethod(key = "Show the average salary for the department",
             value = "Get the average salary in the specified department.")
     public String averageSalaryOfDepartment(String depName) {
         Double averageSalary = departmentRepository.getAverageSalaryOfDepartmentByName(depName);
-        return String.format("The average salary of %s is %f", depName, averageSalary);
+        return averageSalary == null ?
+                String.format("Department with name %s was not found", depName)
+                : String.format("The average salary of %s is %.2f", depName, averageSalary);
     }
 
     @ShellMethod(key = "Show count of employee for",

@@ -3,8 +3,10 @@ package com.botscrew.vital.consoleapp.repository;
 import com.botscrew.vital.consoleapp.model.DepartmentStatistics;
 import com.botscrew.vital.consoleapp.model.Lector;
 
+import java.util.Optional;
+
 public interface DepartmentRepository {
-    Lector getHeadOfDepartmentByName(String depName);
+    Optional<Lector> getHeadOfDepartmentByName(String depName);
 
     Double getAverageSalaryOfDepartmentByName(String depName);
 
