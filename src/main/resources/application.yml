@@ -7,6 +7,12 @@ spring:
     password: ${MYSQL_DB_PASSWORD}
     username: ${MYSQL_DB_USERNAME}
 
+  jpa:
+    hibernate:
+      ddl-auto: none
+#    generate-ddl: false
+#    show-sql: true
+
   sql:
     init:
       mode: always

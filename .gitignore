@@ -33,5 +33,7 @@ build/
 .vscode/
 
 ### Fragile Data ###
-.src/main/resources/application-dev.yml
+src/main/resources/application-dev.yml
+
+spring-shell.log
 
